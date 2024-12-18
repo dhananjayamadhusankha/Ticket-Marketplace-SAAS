@@ -3,7 +3,7 @@
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import Spinner from "./Spinner";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Ticket } from "lucide-react";
 import EventCard from "./EventCard";
 
 function EventList() {
@@ -29,7 +29,9 @@ function EventList() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Upcoming Events</h1>
-          <p className="text-gray-600">Discover & book tickets for amazing events.</p>
+          <p className="text-gray-600">
+            Discover & book tickets for amazing events.
+          </p>
         </div>
 
         <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
@@ -39,19 +41,41 @@ function EventList() {
               {upcomingEvents.length === 0
                 ? "No upcoming events"
                 : upcomingEvents.length === 1
-                ? "1 Upcoming event"
-                : `${upcomingEvents.length} Upcoming events`}
+                  ? "1 Upcoming event"
+                  : `${upcomingEvents.length} Upcoming events`}
             </span>
           </div>
         </div>
       </div>
 
       {/* Events */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {upcomingEvents.map((event) => (
-          <EventCard key={event._id} eventId={event._id} />
-        ))}
-      </div>
+      {upcomingEvents.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {upcomingEvents.map((event) => (
+            <EventCard key={event._id} eventId={event._id} />
+          ))}
+        </div>
+      ) : (
+        <div className="bg-gray-50 flex flex-col rounded-lg p-12 items-center mb-12">
+          <Ticket className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900">
+            No upcoming events
+          </h3>
+          <p className="text-gray-600 mt-1">Check back later for new events!</p>
+        </div>
+      )}
+
+      {/* Past Events */}
+      {pastEvents.length > 0 && (
+        <>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Past Events</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {pastEvents.map((event) => (
+              <EventCard key={event._id} eventId={event._id} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

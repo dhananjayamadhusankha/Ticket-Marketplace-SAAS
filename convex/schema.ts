@@ -1,5 +1,5 @@
-import { v } from "convex/values";
 import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
 
 export default defineSchema({
   events: defineTable({
@@ -30,6 +30,7 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_user_event", ["userId", "eventId"])
     .index("by_payment_intent", ["paymentIntentId"]),
+
   waitingList: defineTable({
     eventId: v.id("events"),
     userId: v.string(),
@@ -39,15 +40,16 @@ export default defineSchema({
       v.literal("purchased"),
       v.literal("expired")
     ),
-    offeredExpiresAt: v.optional(v.number()),
+    offerExpiresAt: v.optional(v.number()),
   })
     .index("by_event_status", ["eventId", "status"])
     .index("by_user_event", ["userId", "eventId"])
     .index("by_user", ["userId"]),
+
   users: defineTable({
-    userId: v.string(),
     name: v.string(),
     email: v.string(),
+    userId: v.string(),
     stripeConnectId: v.optional(v.string()),
   })
     .index("by_user_id", ["userId"])
